@@ -10,7 +10,7 @@ params:
    # subtitle: |-
     #  A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
      # AND RELEASED UNDER THE CREATIVE COMMONS.
-    title: Nereid Kwok Portfolio Website
+    title: Nereid Kwok Portfolio
   blog: {}
   contact:
     address:
@@ -82,9 +82,9 @@ params:
     enable: yes
     showcase:
       - image: pic01.jpg
-        subtitle: London Business School
-        title: Academics
-        url: blogs/nereid
+        subtitle: Pre-program
+        title: R
+        url: blogs/r_preprogram
       - image: pic02.jpg
         subtitle: Finance
         title: Work Experience
