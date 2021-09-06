@@ -84,7 +84,7 @@ params:
       - image: pic01.jpg
         subtitle: London Business School
         title: Academics
-        url: blogs/academics
+        url: blogs/nereid
       - image: pic02.jpg
         subtitle: Finance
         title: Work Experience
