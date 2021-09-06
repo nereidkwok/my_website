@@ -84,7 +84,7 @@ params:
       - image: pic01.jpg
         subtitle: Pre-program
         title: R
-        url: blogs/r_preprogram
+        url: blogs/preprogram
       - image: pic02.jpg
         subtitle: Finance
         title: Work Experience
