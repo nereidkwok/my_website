@@ -65,7 +65,7 @@ params:
         url: blogs/bio
     button2:
       - name: My Resume
-        url: /static/NereidKwok_CV.pdf
+        url: /NereidKwok_CV.pdf
     links:
       - name: Home
         url: '#'
