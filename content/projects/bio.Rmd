@@ -1,0 +1,44 @@
+---
+categories:
+- ""
+- ""
+date: "2017-10-31T22:42:51-05:00"
+description: Hello, this is Nereid. I am a Master of Analytics and Management student at London Business School.
+draft: false
+image: pic07.jpg
+keywords: ""
+slug: bio
+title: Nereid's Biography
+---
+
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(gapminder)  # gapminder dataset
+library(here)
+library(janitor)
+```
+
+
+## Nereid Kwok Short Biography
+
+Hello, my name is **Nereid**. I am a Master of Analytics and Management student at London Business School.
+
+I am from Hong Kong where I got my bachelor degree in Quantitative Finance.
+
+Over my undergraduate studies, I have interned at several financial services companies, NGOs, and investment banks.
+
+After graduation I worked at Goldman Sachs for a year in the Finance division before my studies at LBS.
+
+I only had intermediate knowledge on programming in R, VBA, Python, and SQL. I wish to learn more on analytics through the MAM program.
+
+Here are some of my hobbies that I enjoy during my leisure time:
+
+-   Water sports over the summer (canoeing, snorkeling)
+-   Hiking around fall and spring
+-   Playing Sudoku if I am absolutely bored
+-   Explore all kinds of food
+
+This is one of my best dessert finds in Hong Kong: ![Shari Shari Kakigori](https://magazine.foodpanda.hk/wp-content/uploads/sites/9/2016/05/Shari-Shari-Kakigori.jpg)
+
+If you would like to connect with me, feel free to reach me out with the social media handles at the bottom of the page.
+

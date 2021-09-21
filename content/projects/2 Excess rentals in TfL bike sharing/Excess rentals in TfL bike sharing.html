@@ -1,0 +1,142 @@
+---
+categories:
+- ""
+- ""
+date: "2017-10-30T22:42:51-05:00"
+description: Analysis and Replication of Charts for excess rentals in TfL bike sharing
+draft: false
+image: pic07.jpg
+keywords: ""
+slug: tfl-bike
+title: Excess rentals in TfL bike sharing
+---
+
+<script src="Excess rentals in TfL bike sharing_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="challenge-1-excess-rentals-in-tfl-bike-sharing" class="section level1">
+<h1>Challenge 1: Excess rentals in TfL bike sharing</h1>
+<p>Recall the TfL data on how many bikes were hired every single day. We can get the latest data by running the following</p>
+<pre class="r"><code>url &lt;- &quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&quot;
+
+# Download TFL data to temporary file
+httr::GET(url, write_disk(bike.temp &lt;- tempfile(fileext = &quot;.xlsx&quot;)))</code></pre>
+<pre><code>## Response [https://airdrive-secure.s3-eu-west-1.amazonaws.com/london/dataset/number-bicycle-hires/2021-08-23T14%3A32%3A29/tfl-daily-cycle-hires.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAJJDIMAIVZJDICKHA%2F20210915%2Feu-west-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20210915T095038Z&amp;X-Amz-Expires=300&amp;X-Amz-Signature=121e8625d887bfe6a1276ed44cdb2f634bd7278286db7b5b48db7b7c51083dee&amp;X-Amz-SignedHeaders=host]
+##   Date: 2021-09-15 09:50
+##   Status: 200
+##   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+##   Size: 173 kB
+## &lt;ON DISK&gt;  C:\Users\User\AppData\Local\Temp\RtmpWObT5Z\file29ec6026f2b.xlsx</code></pre>
+<pre class="r"><code># Use read_excel to read it as dataframe
+bike0 &lt;- read_excel(bike.temp,
+                   sheet = &quot;Data&quot;,
+                   range = cell_cols(&quot;A:B&quot;))
+
+# change dates to get year, month, and week
+bike &lt;- bike0 %&gt;% 
+  clean_names() %&gt;% 
+  rename (bikes_hired = number_of_bicycle_hires) %&gt;% 
+  mutate (year = year(day),
+          month = lubridate::month(day, label = TRUE),
+          week = isoweek(day))</code></pre>
+<p>We can easily create a facet grid that plots bikes hired by month and year.</p>
+<p><img src="C:/Users/User/Documents/LBS/AM01 AUT21 Applied Statistics/my_website/images/tfl_distributions_monthly.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Look at May and Jun and compare 2020 with the previous years. What’s happening?</p>
+<p>However, the challenge I want you to work on is to reproduce the following two graphs.</p>
+<p><img src="C:/Users/User/Documents/LBS/AM01 AUT21 Applied Statistics/my_website/images/tfl_monthly.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>expected_monthly &lt;- bike%&gt;%
+  filter(day &gt;= dmy(&quot;01/01/2016&quot;), day&lt;dmy(&quot;01/01/2020&quot;))%&gt;%
+  group_by(month)%&gt;%
+  summarise(expected_avg = mean(bikes_hired))
+
+monthly_rentals &lt;- bike%&gt;%
+  filter(day &gt;= dmy(&quot;01/01/2016&quot;))%&gt;%
+  group_by(year,month) %&gt;% 
+  summarise(actual_avg=mean(bikes_hired)) %&gt;% 
+  left_join(expected_monthly, by = &quot;month&quot;)
+
+monthly_rentals %&gt;% 
+  ggplot(aes(x=as.numeric(month)))+
+  geom_line(aes(y=expected_avg),color=&quot;blue&quot;)+
+  geom_line(aes(y=actual_avg),color = &quot;black&quot;)+
+  geom_ribbon(aes(ymin=expected_avg, ymax=pmax(actual_avg,expected_avg)),fill=&quot;springgreen1&quot;, alpha = 0.3) +
+  geom_ribbon(aes(ymin=pmin(actual_avg,expected_avg), ymax=expected_avg), fill=&quot;tomato&quot;, alpha = 0.3)+
+  facet_wrap(~year)+
+  theme_bw()+
+  theme(legend.position = &quot;none&quot;,
+        strip.background = element_blank(),
+        panel.border = element_blank(),
+        plot.title = element_text(size = 9),
+        plot.subtitle = element_text(size = 7),
+        strip.text.x = element_text(size = 5),
+        axis.text.y = element_text(size = 5),
+        axis.text.x = element_text(size = 5))+
+  scale_x_continuous(labels = function(x) month.abb[x])+
+  labs(title = &quot;Monthly change in Tfl bike rentals&quot;,
+       subtitle = &quot;Change from montly average shown in Blue and calculated between 2016-2019&quot;,
+       x = &quot;Month&quot;,
+       y = &quot;Bikes rentals&quot;)</code></pre>
+<p><img src="/projects/2 Excess rentals in TfL bike sharing/Excess%20rentals%20in%20TfL%20bike%20sharing_files/figure-html/unnamed-chunk-1-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>The second one looks at percentage changes from the expected level of weekly rentals. The two grey shaded rectangles correspond to Q2 (weeks 14-26) and Q4 (weeks 40-52).</p>
+<p><img src="C:/Users/User/Documents/LBS/AM01 AUT21 Applied Statistics/my_website/images/tfl_weekly.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>expected_weekly &lt;- bike %&gt;% 
+  filter(day&gt;=dmy(&quot;4/1/2016&quot;) &amp; day&lt;=dmy(&quot;29/12/2019&quot;)) %&gt;% 
+  group_by(week) %&gt;% 
+  summarise(expected_rentals=mean(bikes_hired))
+
+weekly_rentals &lt;- bike %&gt;% 
+  filter(day&gt;dmy(&quot;4/1/2016&quot;)) %&gt;% 
+  group_by(year,week) %&gt;%
+  mutate(yearminusone = year - 1,
+         year_week = ifelse(week==53 &amp; month==&quot;Jan&quot;,
+                            paste(yearminusone,week,sep=&quot;-&quot;),
+                            paste(year,week,sep=&quot;-&quot;))) %&gt;%
+  group_by(year_week) %&gt;%
+  mutate(actual_rentals = mean(bikes_hired)) %&gt;% 
+  filter(day==max(day)) %&gt;%
+  ungroup() %&gt;%
+  left_join(expected_weekly,by =c(&quot;week&quot;)) %&gt;% 
+  mutate(delta=(actual_rentals/expected_rentals- 1),
+         delta = replace_na(delta, 1),
+         month=ifelse(week==53,&quot;Dec&quot;,month),
+         year=ifelse(week==53,year-1,year)) %&gt;% 
+  add_row(year=2016,week=53,delta=0)
+
+           
+
+weekly_rentals %&gt;% 
+  ggplot(aes(x=week,
+             y=delta))+
+  geom_line(aes(y = delta)) +
+  annotate(&quot;rect&quot;, xmin = 13, xmax = 26, ymin = -Inf, ymax = Inf, fill = &quot;grey&quot;, alpha = 0.3)+
+  annotate(&quot;rect&quot;, xmin = 39, xmax = 53, ymin = -Inf, ymax = Inf, fill = &quot;grey&quot;, alpha = 0.3)+
+  geom_ribbon(aes(ymin=0, ymax=pmax(0, delta), fill=&quot;#eab5b7&quot;, alpha = 0.3)) +
+  geom_ribbon(aes(ymin=pmin(0, delta), ymax=0, fill=&quot;#c0e0c3&quot;, alpha = 0.3))+
+  geom_rug(data=subset(weekly_rentals,delta&gt;=0),color=&quot;#c0e0c3&quot;,sides=&quot;b&quot;)+
+  geom_rug(data=subset(weekly_rentals,delta&lt;0),color=&quot;#eab5b7&quot;,sides=&quot;b&quot;)+
+  facet_wrap(~year)+
+  scale_y_continuous(labels = scales::percent)+
+  labs(title=&quot;Weekly changes in TfL bike rentals&quot;,
+       subtitle=&quot;% change from weekly averages \ncalculated between 2016-2019&quot;,
+       x=&quot;week&quot;,
+       y=&quot;&quot;)+
+  scale_x_continuous(breaks = c(13,26,39,53))+
+  theme_bw()+
+  theme(legend.position = &quot;none&quot;,
+        strip.background = element_blank(),
+        panel.border = element_blank(),
+        plot.title = element_text(size = 9),
+        plot.subtitle = element_text(size = 7),
+        strip.text.x = element_text(size = 5),
+        axis.text.y = element_text(size = 5),
+        axis.text.x = element_text(size = 5))</code></pre>
+<p><img src="/projects/2 Excess rentals in TfL bike sharing/Excess%20rentals%20in%20TfL%20bike%20sharing_files/figure-html/unnamed-chunk-2-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>For both of these graphs, you have to calculate the expected number of rentals per week or month between 2016-2019 and then, see how each week/month of 2020-2021 compares to the expected rentals. Think of the calculation <code>excess_rentals = actual_rentals - expected_rentals</code>.</p>
+<p>Should you use the mean or the median to calculate your expected rentals? Why?</p>
+<p>In creating your plots, you may find these links useful:</p>
+<ul>
+<li><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="uri">https://ggplot2.tidyverse.org/reference/geom_ribbon.html</a></li>
+<li><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="uri">https://ggplot2.tidyverse.org/reference/geom_tile.html</a></li>
+<li><a href="https://ggplot2.tidyverse.org/reference/geom_rug.html" class="uri">https://ggplot2.tidyverse.org/reference/geom_rug.html</a></li>
+</ul>
+</div>

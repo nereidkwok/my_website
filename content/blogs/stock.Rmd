@@ -1,0 +1,155 @@
+---
+categories:
+- ""
+- ""
+date: "2017-11-31T22:42:51-05:00"
+description: Financial analysis on stock returns of and AAPL,DIS,DPZ,ANF,TSLA,SPY.
+draft: false
+image: picstock.jpeg
+keywords: ""
+slug: stocks
+title: Returns of financial stocks
+---
+
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(fivethirtyeight)
+library(here)
+library(skimr)
+library(janitor)
+library(vroom)
+library(tidyquant)
+library(rvest) # to scrape wikipedia page
+library(skimr)
+library(ggplot2)
+```
+
+
+We will use the `tidyquant` package to download historical data of stock prices, calculate returns, and examine the distribution of returns.
+
+We must first identify which stocks we want to download data for, and for this we must know their ticker symbol; Apple is known as AAPL, Microsoft as MSFT, McDonald's as MCD, etc. The file `nyse.csv` contains 508 stocks listed on the NYSE, their ticker `symbol`, `name`, the IPO (Initial Public Offering) year, and the sector and industry the company is in.
+
+```{r load_nyse_data, message=FALSE, warning=FALSE}
+nyse <- read_csv(here::here("data","nyse.csv"))
+glimpse(nyse)
+```
+
+Based on this dataset, a table and a bar plot was created to show the number of companies per sector, in descending order
+
+```{r companies_per_sector}
+
+# Create table by sector in descending order of number of companies
+companiesPerSector <- nyse%>%
+  group_by(sector)%>%
+  count(sort = TRUE, name = "numOfComp")
+companiesPerSector  
+```
+
+```{r}
+# Create bar plot
+ggplot(companiesPerSector, aes(x = numOfComp, y = reorder(sector,numOfComp),fill=sector))+
+  geom_col()+
+  labs(x = "Number of Companies",
+       y = "Sector",
+       title = "Number of Companies in each Sector")+
+  theme_bw()+
+  theme(legend.position="none")+
+  NULL
+```
+
+
+6 stocks including the the SP500 ETF (Exchange Traded Fund) was selected to perform the analysis.
+
+```{r get_price_data, message=FALSE, warning=FALSE, cache=TRUE}
+# Select prices of the 6 stocks with SPY with a time frame
+myStocks <- c("AAPL","DIS","DPZ","ANF","TSLA","SPY" ) %>%
+  tq_get(get  = "stock.prices",
+         from = "2011-01-01",
+         to   = "2021-08-31") %>%
+  group_by(symbol) 
+
+# Examine the structure of the resulting data frame
+glimpse(myStocks) 
+```
+
+Financial performance analysis depend on returns. Given the adjusted closing prices, daily, monthly, and yearly returns are calculated.
+
+```{r calculate_returns, message=FALSE, warning=FALSE, cache=TRUE}
+#calculate daily returns
+myStocks_returns_daily <- myStocks %>%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = "daily", 
+               type       = "log",
+               col_rename = "daily_returns",
+               cols = c(nested.col))  
+
+#calculate monthly  returns
+myStocks_returns_monthly <- myStocks %>%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = "monthly", 
+               type       = "arithmetic",
+               col_rename = "monthly_returns",
+               cols = c(nested.col)) 
+
+#calculate yearly returns
+myStocks_returns_annual <- myStocks %>%
+  group_by(symbol) %>%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = "yearly", 
+               type       = "arithmetic",
+               col_rename = "yearly_returns",
+               cols = c(nested.col))
+```
+
+A table which summarises monthly returns for each of the stocks and `SPY` with min, max, median, mean, SD.
+
+```{r summarise_monthly_returns}
+monthlyReturnSummary <- myStocks_returns_monthly%>%
+  summarise(monthly_max = max(monthly_returns),
+            monthly_min = min(monthly_returns),
+            monthly_mean = mean(monthly_returns),
+            monthly_median = median(monthly_returns),
+            monthly_sd = sd(monthly_returns))
+monthlyReturnSummary
+```
+
+Density plots for each of the stocks by faceting
+
+```{r density_monthly_returns}
+ggplot(myStocks_returns_monthly, aes(monthly_returns))+
+  geom_density()+
+  facet_wrap(~symbol)+
+  labs(x = "Distribution of Monthly Return",
+       y = "Probability % ",
+       title  = "Probability Distribution of Monthly Returns")+
+  theme_bw()+
+  NULL
+
+```
+
+
+> Tesla is the riskiest stock as it has the highest spread, which means its monthly standard deviations are the highest. The least risky is SPY as it has the narrowest spread.
+
+A plot that shows the expected monthly return (mean) of a stock on the Y axis and the risk (standard deviation) in the X-axis. 
+
+```{r risk_return_plot}
+# ggrepel function helps repel overlapping text labels
+library(ggrepel)
+ggplot(monthlyReturnSummary, aes(x = monthly_sd, y = monthly_mean))+
+  geom_point(size = 4, aes(color = symbol))+
+  ggrepel::geom_text_repel(aes(label = symbol), size = 4)+
+  labs(x = "Standard Deviation of Monthly Returns",
+       y = "Average Monthly Returns",
+       title = "Risk vs Potential Return")+
+  theme_bw()+
+  NULL
+```
+
+
+> ANF is much riskier than most, while delivering the lowest returns.
