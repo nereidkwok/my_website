@@ -8,7 +8,7 @@ params:
   banner: 
     buttonText: Get to know me
     subtitle: |-
-     Portfolio with projects during my studies at London Business School
+     Projects from my postgraduate Journey at London Business School
     title: Nereid Kwok Portfolio
   blog: {}
   contact:
@@ -68,10 +68,10 @@ params:
     links:
       - name: Home
         url: '#'
-      - name: Projects
-        url: blogs
       - name: Biography
         url: blogs/bio
+      # - name: Projects
+      #   url: blogs
       #- name: Elements
       #  url: elements.html
     menu: Menu
@@ -84,7 +84,7 @@ params:
         subtitle: Know more about me
         title: Nereid's Biography
         url: blogs/bio
-      - image: picyouth.jpg
+      - image: picwork.jpg
         subtitle: Work & qualifications
         title: Work Experience
         url: blogs/workexperience

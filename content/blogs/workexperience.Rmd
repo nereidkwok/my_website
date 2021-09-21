@@ -3,7 +3,7 @@ title: "Work Experience and Qualifications"
 date: '2017-11-31T22:42:51-05:00'
 description: Work experience, internships, qualifications and more professional qualifactions
 draft: no
-image: picwork.jpg
+image: 
 keywords: ''
 slug: workexperience
 categories:
@@ -11,7 +11,7 @@ categories:
 - ''
 ---
 
-# Work Experience
+## Work Experience
 
 -   **Goldman Sachs**  
 *2020-2021*  
@@ -34,11 +34,11 @@ Private Equity & Real Estate Fund Services Intern
 Summer Intern
 
 
-# Qualifications
+## Qualifications
 -   **Chartered Financial Analyst (CFA)** Level 1 passed
 -   **Financial Risk Manager (FRM)** Level 1 passed
 
-# Other Information
+## Other Information
 
 -   **Languages**: English (fluent), Cantonese (native), Mandarin (fluent)  
 
