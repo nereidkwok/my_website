@@ -1,6 +1,6 @@
 baseURL: https://nereidkwok.netlify.app/
 languageCode: en-us
-title: Portfolio website for Nereid Kwok
+title: Nereid Kwok
 theme: forty
 googleAnalytics: ''
 disqusShortname: ''
@@ -14,8 +14,8 @@ params:
   blog: {}
   contact:
     address:
-      - city: London 00000
-        country: United Kingdom
+      - city: London
+        country: United Kingdom NW1 4SA
         street: Regent's Park
         title:  London Business School
     buttonClear: Clear
@@ -35,7 +35,7 @@ params:
     text: Please visit [this page](/)
   favicon: favicon.ico
   footer:
-    copyright: Nereid Kwok
+    copyright: Nereid Kwok 2021
     enable: yes
     quicklinks:
       - alt: HTML5 UP
@@ -63,9 +63,9 @@ params:
     button1:
       - name: Learn More About Me
         url: blogs/bio
-    # button2:
-    #   - name: Log In
-    #     url: '#'
+    button2:
+      - name: My Resume
+        url: /static/NereidKwok_CV.pdf
     links:
       - name: Home
         url: '#'
