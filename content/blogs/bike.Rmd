@@ -5,7 +5,7 @@ categories:
 date: "2017-11-31T22:42:51-05:00"
 description: Creating weekly and monthly graphs for excess rentals in TfL bike sharing.
 draft: false
-image: pic-bike.jpeg
+image: picbike.jpg
 keywords: ""
 slug: bike
 title: Excess rentals in TfL bike sharing

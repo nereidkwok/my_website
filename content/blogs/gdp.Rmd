@@ -5,7 +5,7 @@ categories:
 date: "2017-11-31T22:42:51-05:00"
 description: Comparing GDP components over time and among countries, then compare the difference between actual GDP and our own calulated GDP. 
 draft: false
-image: picgdp.jpeg
+image: picgdp.jpg
 keywords: ""
 slug: gdp
 title: GDP components over time and among countries

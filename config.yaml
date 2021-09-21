@@ -7,9 +7,8 @@ disqusShortname: ''
 params:
   banner: 
     buttonText: Get to know me
-   # subtitle: |-
-   #  A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
-   # AND RELEASED UNDER THE CREATIVE COMMONS.
+    subtitle: |-
+     Portfolio with projects during my studies at London Business School
     title: Nereid Kwok Portfolio
   blog: {}
   contact:
@@ -61,18 +60,18 @@ params:
   name: Your name
   navigation:
     button1:
-      - name: Learn More About Me
-        url: blogs/bio
-    button2:
       - name: My Resume
         url: https://drive.google.com/file/d/19zuN_6jyipmt7744OBxsWcYT-CSHOOmO/view?usp=sharing
+    # button2:
+    #   - name: My Resume
+    #     url: https://drive.google.com/file/d/19zuN_6jyipmt7744OBxsWcYT-CSHOOmO/view?usp=sharing
     links:
       - name: Home
         url: '#'
-      # - name: Projects
-      #   url: blogs
-     # - name: Generic Blog
-      #  url: ipsum
+      - name: Projects
+        url: blogs
+      - name: Biography
+        url: blogs/bio
       #- name: Elements
       #  url: elements.html
     menu: Menu
@@ -85,6 +84,10 @@ params:
         subtitle: Know more about me
         title: Nereid's Biography
         url: blogs/bio
+      - image: picyouth.jpg
+        subtitle: Work & qualifications
+        title: Work Experience
+        url: blogs/workexperience
       - image: picstock.jpg
         subtitle: Finance
         title: Returns of financial stocks
@@ -97,10 +100,6 @@ params:
         subtitle: Relationship
         title: Omega Group plc - Pay Discrimination
         url: blogs/omega
-      - image: picyouth.jpg
-        subtitle: Hypothesis testing
-        title: Youth Risk Behavior Surveillance
-        url: blogs/youth
       - image: picgdp.jpg
         subtitle: Trend comparison
         title: GDP Among Countries

@@ -1,0 +1,55 @@
+---
+title: "Work Experience and Qualifications"
+date: '2017-11-31T22:42:51-05:00'
+description: Work experience, internships, qualifications and more professional qualifactions
+draft: no
+image: picwork.jpg
+keywords: ''
+slug: workexperience
+categories:
+- ''
+- ''
+---
+
+# Work Experience
+
+-   **Goldman Sachs**  
+*2020-2021*  
+Finance Consultant  
+
+-  **Société Générale**  
+*2019 Summer*  
+Market Activity Intern
+
+-  **Société Générale**  
+*2018 Summer*  
+Regulatory Oversight Intern
+
+-  **Intertrust Group**  
+*2018 Spring*  
+Private Equity & Real Estate Fund Services Intern
+
+-  **Hong Kong Investment Funds Association**  
+*2017 Summer*  
+Summer Intern
+
+
+# Qualifications
+-   **Chartered Financial Analyst (CFA)** Level 1 passed
+-   **Financial Risk Manager (FRM)** Level 1 passed
+
+# Other Information
+
+-   **Languages**: English (fluent), Cantonese (native), Mandarin (fluent)  
+
+-   **Knowledge**: Financial Modeling, Corporate Finance, Investment Analysis, Portfolio Management, Empirical Finance, Fixed-Income Securities Analysis, Options and Futures  
+
+-   **Technical**: R, Python, SQL, VBA, Stata, Eviews, Bloomberg Terminal, Thomson Reuters Eikon  
+
+-   **Leadership**: Served as Vice President at Strategic Investment Society CUHK to organize investment talks and mentorship programs, while maintaining alumni network with former executive members  
+
+-   **Volunteering**: Volunteered as International Ambassador at CUHK to promote international culture and assist international student on campus  
+
+-   **Cultural**: Engaged in the Global Leaders Orange and Blue Engagement Programme at UIUC in leadership and team building to facilitate cultural exchange between local and international students
+
+

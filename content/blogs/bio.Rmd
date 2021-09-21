@@ -11,14 +11,6 @@ slug: bio
 title: Nereid's Biography
 ---
 
-```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
-library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
-library(gapminder)  # gapminder dataset
-library(here)
-library(janitor)
-```
-
-
 ## Nereid Kwok Short Biography
 
 Hello, my name is **Nereid**. I am a Master of Analytics and Management student at London Business School.
